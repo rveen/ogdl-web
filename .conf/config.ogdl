@@ -1,0 +1,199 @@
+host localhost
+
+http
+  port 80
+
+#https
+#  port 443
+
+files
+    path /up
+    
+erp
+  database
+    uri "trukeusr:trukepass@tcp(localhost:3306)/trukedb"
+    driver mysql
+  forum
+    tags
+      general "General topics"
+      general-es "Temas generales"
+
+sessions
+    timeout 600
+
+databases
+  db1
+    uri "trukeusr:trukepass@tcp(localhost:3306)/trukedb"
+    driver mysql
+  users   
+    uri "trukeusr:trukepass@tcp(localhost:3306)/trukedb"
+    driver mysql
+    
+
+
+# See here: https://www.vectorsolutions.com/resources/blogs/levels-of-a-risk-matrix/
+
+risk
+  severity
+    "" "-"
+    1/10 "1/10. No effect"
+    2/10 "2/10. Low disconfort"
+    3/10 "3/10. Moderate disconfort"
+    4/10 "4/10. High disconfort"
+    5/10 "5/10. Degradation of secondary function"
+    6/10 "6/10. Loss of secondary function"
+    7/10 "7/10. Degradation of primary function"
+    8/10 "8/10. Loss of primary function"
+    9/10 "9/10. Noncompliance with regulations"
+    10/10 "10/10. Unsafe operation"
+    S0 "S0. Safe / no injuries"
+    S1 "S1. Light / moderate injuries"
+    S2 "S2. Severe injuries (survival probable)"
+    S3 "S3. Life threatening or fatal injuries"
+    1/5 "1/5. Negligible (the hazard will not result in serious injury or illness, or has a remote possibility of damage)"
+    2/5 "2/5. Marginal (the hazard could cause illness, injury, or equipment damage but its effects would not be serious)"
+    3/5 "3/5. Moderate (the hazard can result in serious injury or illness, property or equipment damage)"
+    4/5 "4/5. Critical (the hazard can result in serious injury or illness, property or equipment damage)"
+    5/5 "5/5. Catastrophic (the hazard is capable of causing death and illness)"
+  probability
+    "" "-"
+    1/5 "1/5 (E0) Improbable"
+    2/5 "2/5 (E1) Remote / very low"
+    3/5 "3/5 (E2) Occasional / low"
+    4/5 "4/5 (E3) Probable / medium"
+    5/5 "5/5 (E4) Frequent / high"
+  controllability
+    "" "-"
+    1/4 "C0. Controllable in general"
+    2/4 "C1. Simply controllable"
+    3/4 "C2. Normally controllable"
+    4/4 "C3. Difficult to control or incontrollable"
+  detection
+    "" "-"
+    1/10 "1/10. N/A. Failure cannot happen",
+    2/10 "2/10. Strong detection capability",
+    3/10 "3/10. PV prior to design freeze, degradation testing",
+    4/10 "4/10. PV prior to design freeze, test to failure",
+    5/10 "5/10. PV prior to design freeze, pass/fail testing",
+    6/10 "6/10. PV after design freeze, degradation testing",
+    7/10 "7/10. PV after design freeze, test to failure",
+    8/10 "8/10. PV after design freeze, pass/fail testing",
+    9/10 "9/10. Very remote",
+    10/10 "10/10. Indetectable",
+
+
+tags
+
+  element
+    class
+    reference
+    topmenu
+  event
+    open
+    closed
+    pending
+    happened
+    discarded
+  action
+    solution
+    good
+    bad
+    noEffect
+    class
+    change
+    test
+    verification
+    preventive
+    containment
+    passed
+    failed
+    rule
+    accepted
+    rejected
+    reference
+    done
+    milestone
+    topmenu
+  document
+    class
+    topmenu
+  doc
+    class
+    topmenu
+
+templates
+
+  log \
+    $T(_this,header)
+    $T(_this,navbar)
+    <div class="container">
+    <h1><span style="color: #999">Revisions of</span> $path.filename</h1><br>
+    <table class="table">
+    <thead><tr><td>Revision</td><td>Author</td><td>Comment</td><td>Date</td></tr></thead>
+    $for(rev,path.data.log)
+    <tr><td><a href="$html.RepoBase(rev[0].urlBase,R.home)$rev[0].urlRel@$rev[0].'@revision'">$rev[0]."@revision"</td><td>$rev[0].author</td><td>$rev[0].msg</td><td>$rev[0].date</td></tr>
+    $end
+    </table>
+    </div>
+    $footer
+
+  document \
+    $T(_this,header)
+    $if(strings.HasPrefix(R.url,"/es/"))$T(_this,navbar_es)$else$T(_this,navbar)$end
+    <div class="container" style=""><br>
+    $html.ChecklistHighlight(path.content)
+    <br><br>$R.url
+    </div>
+    $footer
+
+  data \
+    $T(_this,header)
+    $T(_this,navbar)
+    <div class="container"><pre>$path.data</pre></div>
+    $footer
+
+  dir \
+    $T(_this,header)
+    $T(_this,navbar)
+    <div class="container">
+    <h1>$html.Breadcrumb(R.url)</h1>
+    <table class="table">
+    $for(f,path.data)
+    $if(f[0].type=="dir")
+    <tr><td><a class="list-dir" href="$f[0].name"><b>$f[0].name</b></a> /</td></tr>
+    $end
+    $end
+    $for(f,path.data)
+    $if(f[0].type!="dir")
+    <tr><td><a class="list-dir" href="$f[0].name">$f[0].name</a></td></tr>
+    $end
+    $end
+    </table>
+    </div>
+    $footer
+
+  readme \
+    $T(_this,header)
+    $T(_this,navbar)
+    <div class="container-fluid" style="width:100%">
+    <div class="row">
+    <div class="col-2" style="padding-right: 30px">
+    <table class="table" style="margin: 0">
+    $for(f,path.data)
+    $if(f[0].type=="dir")
+    <tr><td><a class="list-dir" href="$f[0].name"><b>$f[0].name</b></a> /</td></tr>
+    $end
+    $end
+    $for(f,path.data)
+    $if(f[0].type!="dir")
+    <tr><td><a class="list-dir" href="$f[0].name">$f[0].name</a></td></tr>
+    $end
+    $end
+    </table>
+    </div>
+    <div class="col-8">
+     $html.ChecklistHighlight(path.content)
+    </div>
+    </div>
+    </div>
+    $footer

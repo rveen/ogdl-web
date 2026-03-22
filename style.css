@@ -1,0 +1,27 @@
+body { font-family: 'Open Sans', sans-serif; color: #333; }
+td   { vertical-align: top; }
+table { width: 100% }
+img { border: 0 }
+
+a    { color: #003366; text-decoration: none }
+a:hover { color: #3366aa; text-decoration: none }
+
+h1, h2, h3, h4 { color: #47a; font-weight: normal;  }
+
+p { text-align: justify }
+
+hr { padding: 0; margin: 2px 0 2px 0; height: 1px; background: #ddd; color: #ddd; border: 0; }
+
+.jumbotron {
+	color: white;
+	background: #2b6287;
+}
+
+.navbar { margin: 0; }
+
+.data pre { border: 0; background: none; padding: 0px }
+.data td { border-bottom: 1px solid #ccc; padding: 5px; font-family: monospace }
+.datah { background: #48a; color: white; }
+.data-1 { width: 15em }
+.data { background: #eee; }
+

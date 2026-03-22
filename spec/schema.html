@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/font-awesome.min.css" rel="stylesheet">
+    
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,italic,bold" rel="stylesheet">
+    <link REL="STYLESHEET" HREF="/style.css" TYPE="text/css">
+    <title>OGDL, Ordered graph data language</title>
+</head>
+
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">OGDL</a>
+        </div>
+        
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+           
+            <li ><a href="/qa.html">FAQ</a></li>
+            
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Specifications <span class="caret"></span></a>
+               
+              <ul class="dropdown-menu">
+                <li><a href="/spec">OGDL</a></li>
+                <li><a href="/spec/path.html">OGDL Path</a></li>
+                <li><a href="/spec/binary.html">OGDL Binary</a></li>
+                <li><a href="/spec/schema.html">OGDL Schema</a></li>
+              </ul> 
+            </li>
+          </ul>
+        </div>
+        
+      </div>
+    </nav>
+
+    <br><br>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
+      <div class="row">
+      <div class="col-md-12">
+      <h1>OGDL Schema Specification</h1>
+        <p><b>Revision 2015.9</b>, September 2015</p>
+      </div>
+      </div>
+      </div>
+    </div>
+
+<div class="container">
+
+<h1>1. Introduction</h1>
+
+<p>
+This specification defines a method of writing OGDL documents that act as schemas for other 
+OGDL documents. A schema is a definition of a type. Some basic types are already defined, and schemas
+are just complex types.
+</p>
+
+<p>This specification is far from finished. The use of schemas in the context
+of OGDL has yet to be proved useful.
+</p>
+
+<h1>2. Syntax</h1>
+
+<table>
+<tr><td><i>literal</i><td>As is</td></tr>
+<tr><td>/<i>regexp</i>/</td><td>Node must match the given regular expression</td></tr>
+<tr><td><i>spec</i>+<td>One or more times</td></tr>
+<tr><td><i>spec</i>*<td>Zero or more times</td></tr>
+<tr><td><i>spec</i>?<td>Optional (zero or one time)</td></tr>
+<tr><td>*</td><td>Any node</td></tr>
+<tr><td>**</td><td>Any graph</td></tr>
+
+<tr><td>!<i>type</i></td><td>Node must match the rules defined for <i>type</i></td></tr>
+<tr><td>!or</td><td>OR between two or more blocks</td></tr>
+<tr><td>!types</td><td>Define new types</td></tr>
+</table>
+
+<h1>3. Predefined types</h1>
+
+<pre>
+boolean | bool     true | false
+string             Unicode string 
+int                Integer (unspecified size)
+float              Floating point number (unspecified size) 
+binary             Binary object
+</pre>
+
+<h1>4. Example</h1>
+
+<pre class=code>
+!types
+   email "/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$./"
+   visa-card "/^4[0-9]{12}(?:[0-9]{3})?$/"
+   string-100 
+      !string max-length 100
+
+contact*
+    name  !string-100
+    email !email
+    id    !int
+    visa  !visa-card
+    notes *
+</pre>
+
+</div>
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<div class="container">
+<br>
+<br>
+</div>
+</body></html>

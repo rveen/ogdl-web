@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/font-awesome.min.css" rel="stylesheet">
+    
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,italic,bold" rel="stylesheet">
+    <link REL="STYLESHEET" HREF="/style.css" TYPE="text/css">
+    <title>OGDL, Ordered graph data language</title>
+</head>
+
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">OGDL</a>
+        </div>
+        
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+           
+            <li ><a href="/qa.html">FAQ</a></li>
+            
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Specifications <span class="caret"></span></a>
+               
+              <ul class="dropdown-menu">
+                <li><a href="/spec">OGDL</a></li>
+                <li><a href="/spec/path.html">OGDL Path</a></li>
+                <li><a href="/spec/binary.html">OGDL Binary</a></li>
+                <li><a href="/spec/schema.html">OGDL Schema</a></li>
+              </ul> 
+            </li>
+          </ul>
+        </div>
+        
+      </div>
+    </nav>
+
+    <br><br>
+
+<div class="jumbotron">
+      <div class="container">
+      <h1>OGDL Specification</h1>
+        <p><b>Revision 2026.2</b>, February 2026<br>
+      </div>
+</div>
+
+<div class="container">
+
+<h1>Introduction</h1>
+
+<p>
+OGDL is a textual format that represents trees of data, where the nodes (vertices) are strings and the edges are
+space or indentation. Its main objectives are simplicity and readability. 
+</p>
+
+<h2>The data model</h2>
+
+<p>The text format specified here represents a directed graph G=(N,E), where N is an ordered <i>bag</i> of nodes and E a relation NxN.
+Nodes are represented by strings. Each member of E is an arc (edge), and is represented by space between nodes.
+</p>
+
+<p>OGDL does not support types in its basic form (the one described in this document), and nodes default to type <i>string</i>. Parsers that support
+OGDL Schema can preload an OGDL document that acts as a schema, and allow the nodes to have other types.</p> 
+
+<p>The support for ordering and duplicates precludes the use of a maps as the in-memory representation of OGDL.</p>
+
+<p>The byte stream read by the parser can have any ASCII transparent character encoding, such as Unicode UTF-8.</p>
+
+<h2>Strings and white space</h2>
+
+<p>Strings and space are the basics of OGDL. If a string contains spaces then it has to be quoted. These two elements form a 
+tree, where strings are childs of the immediately preceding lower indented string. 
+</p>
+
+<!-- TODO: Raw string and escape sequences -->
+
+<pre>
+a
+  b
+  "string with spaces"
+</pre>
+
+<p>This first form of writing OGDL, where each node begins on a new line, is called the <i>canonical form</i>.</p>
+
+More nodes on the same line are possible. The canonical form:
+
+<pre>
+a
+  b
+</pre>
+
+can be written as:
+
+<pre>
+a b
+</pre>
+
+The nesting level of subnodes on a different line does not change if another subnode is placed on the same line:
+
+<pre>
+a b
+  c
+</pre>
+
+is the same as:
+
+<pre>
+a
+  b
+  c
+</pre>
+
+Corner cases:
+
+<pre>
+O'hara' -> word (not detected as quoted)
+What"   -> word (not detected as quoted)
+</pre>
+
+(Explain escaping in quoted)
+
+<h2>Text block</h2>
+
+<p>
+A text block is a string with possibly newlines in it. A standalone '\' character at the end of a line introduces
+a text block, as in the following example.
+</p>
+
+<pre>
+text_block \
+  This is a multiline
+  description
+</pre> 
+
+<p>Indentation spaces are deleted from the text. When, within a block, a line is less indented than the previous one, this indentation becomes
+the new level of indentation. If it is more indented, the extra spaces are considered part of the text and not deleted.</p>
+
+<p>This example is equivalent to the previous one:</p>
+
+<pre>
+text_block \
+   This is a multiline
+  description
+</pre>
+
+<p>Note that quoted strings can have newlines, and the example above can also we written as:</p>
+
+<pre>
+text_block
+  "This is a multiline
+   description"
+</pre>  
+
+
+<h2>Comments</h2>
+
+<p>The string "# " introduces a comment, if preceded by white space (newline, space, tab) . Comments are treated as white space, and thus ignored.
+</p>
+
+<pre class=example>
+# this is a comment
+#this not
+content #not_a_comment
+this#neither
+</pre>
+
+<h2>End of stream</h2>
+
+<p>
+Any character that is not a space, break or word character will end the OGDL stream. That means that the parser
+will exit when it finds such a character. Most characters below ASCII 32 (space) will end the current stream.  
+</p>
+<p>
+This mechanism may be used, for example, in log files, where many OGDL fragments can be concatenated in one
+file; pointing the parser to the start of any of them will return that fragment only. 
+</p>
+
+<h2>Cycles</h2>
+
+Cycles were initialy planed, but never implemented. Thus, it is removed from this specification.
+That makes OGLD an ordered tree language (but we are not going to change the name now).
+
+<h1>Grammar</h1>
+
+<p>
+The following grammar rules or productions are written in a simplified EBNF format similar to the one used in the XML specification
+(see <a href="http://www.w3.org/TR/xml11/#sec-notation">http://www.w3.org/TR/xml11/#sec-notation</a>),
+except that single quotes enclose single characters.
+</p>
+
+<p><em>Note: Since OGDL is layout sensitive, a context free grammar such as EBNF can not fully express it. Additional comments 
+cover the missing features.</em></p>  
+
+<pre>
+[1] char         ::= any Unicode character
+[2] char_control ::= U+0000..U+001F | U+007F..U+009F ; Unicode category Cc
+
+Character classes (non overlapping)
+[3] char_space   ::= U+0020 | U+0009 ; space or tab 
+[4] char_break   ::= U+000A |  U+000D ; LF or CR
+[5] char_end ::= char_control - char_space - char_break
+[5a] eof ::= char_end | end of input
+[7] char_word    ::= char - char_break - char_end - char_space
+
+Character classes (overlapping: a character can be part of more than one class)
+[6] char_string ::= char - char_break - char_end
+
+Quoted strings: escapes, breaks
+[8] char_quoted  ::= char - char_end - '\'' - '"'
+            
+[9]  break        ::= U+000A |  U+000D | (U+000D U+000A) ; LF or CR or CR+LF   
+[10] space        ::= char_space+ ; space? is equivalent to char_space*
+[11] space(n)     ::= char_space*n ; n ≥ 0 (indent width)        
+            
+// token (no spaces or breaks, no start with ' or ")      
+[10] word ::= (char_word - '\'' - '"') char_word*
+
+// string = text with spaces, no breaks. 
+[12] string ::= char_string+
+
+// Add escapes
+[13] quoted ::= ( ('\'' char_quoted* '\'') | ('"'  char_quoted*  '"') )
+             
+[17] comment ::= (space | break) '#' space string? (break | eof)
+                
+[18] element ::= word | quoted
+
+[19] list ::= element (space element)*
+[20] block(n) ::= '\' (comment | break) (space(m) string break)+ ; where m > n            
+[21] line(n) ::= space(n) ( ( list block(n)? ) | comment ) (break | eof)             
+[22] tree ::= line* eof
+</pre>
+
+<p>
+[12] is the indentation production. It corresponds to the equivalent number of spaces between the start of a line
+and the beginning of the first scalar node. For any two consecutive scalars preceded by indentation, the second is
+child of the first one if it is more indented.
+Intermixing of spaces and tabs is NOT allowed: either tabs or spaces should be used for indentation within a document.
+</p>
+
+<p>A quote character that has to be included in the string should be preceded by '\'.
+If the string contains line breaks, leading spaces on each new line are stripped off. The initial
+indentation is defined by the first line after a break. The indentation is decreased if word
+characters appear at a lower indentation, but it is never increased. Escape sequences that are recognized are \", \' and \\. The character '\' should be considered
+literal in all other cases.</p>
+
+<p>A block is a scalar leaf node, i.e., it cannot be parent
+of other nodes. It is used for holding literal text.
+The only transformation that it undergoes is leading space stripping, according
+to the indentation rules. A block is child of the scalar that
+precedes it.
+</p>
+
+
+
+<h1>Character encoding</h1>
+
+<p>OGDL streams must parse well without explicit encoding information for all ASCII transparent encodings. 
+All special characters used in OGDL that define structure and delimit tokens are part of the US-ASCII (ISO646-US) set. 
+This guarantees that tools that support only single byte streams will work on any 8-bit fixed or variable length 
+encoded stream, particularly <a href="ftp://ftp.rfc-editor.org/in-notes/rfc2279.txt">UTF-8</a> and ISO8859 variants.
+Since the conversion from bytes to characters and back is outside the scope of OGDL, it is up to the 
+application to decide how to treat non-printable characters which are outside the ASCII space. 
+</p>
+
+<br/><br/>
+<h1>Changes to this document</h1>
+
+<p>See the <a href="README.md">Change list</a></p>
+
+<hr>
+<br><br>
+</div>
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+</body></html>

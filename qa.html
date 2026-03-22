@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/font-awesome.min.css" rel="stylesheet">
+    
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,italic,bold" rel="stylesheet">
+    <link REL="STYLESHEET" HREF="/style.css" TYPE="text/css">
+    <title>OGDL, Ordered graph data language</title>
+</head>
+
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">OGDL</a>
+        </div>
+        
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+           
+            <li  class="active"  ><a href="/qa.html">FAQ</a></li>
+ 
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Specifications <span class="caret"></span></a>
+               
+              <ul class="dropdown-menu">
+                <li><a href="/spec">OGDL</a></li>
+                <li><a href="/spec/path.html">OGDL Path</a></li>
+                <li><a href="/spec/binary.html">OGDL Binary</a></li>
+                <li><a href="/spec/schema.html">OGDL Schema</a></li>
+              </ul> 
+            </li>
+          </ul>
+        </div>
+        
+      </div>
+    </nav>
+
+    <br><br>
+
+<div class="jumbotron">
+      <div class="container">
+      <h1>FAQ</h1>
+      <p>Questions and answers about OGDL</p>
+      </div>
+</div>
+
+<div class="container">
+
+
+<ul>
+
+<li>
+<b>Since OGDL represents graphs, can I store information in the edges ?</b><br/>
+
+<p>No. In OGDL egdes are represented by space and don't carry any information. On the other hand, it is nevertheless
+possible to define complexer graph description languages on top of OGDL.</p>
+</li>
+
+<li><b>What are the differences between XML and OGDL ?</b><br/>
+
+<p>
+Apart from the syntax, the underlying model is different. XML is a mark-up language, and it can represent
+information trees and also <i>mixed content</i>. The essential difference between the two is that XML can represent
+both <b>data</b> and <b>documents</b>, while OGDL is oriented towards <b>data</b> only. In XML, mark-up and data
+separators have only one syntax, while in OGDL only data separators are defined (as space). That said, there are
+other document description languages that use a different syntax for structure and mark-up, and OGDL can be used
+in conjunction with additional mark-up, but it remains the question if this is the best way.
+</p>
+<p>OGDL is born as a very simple and readable way to structure text information. It does away with the element/attribute
+dicotomy existing in XML, and has very few grammar rules (productions). It is both human and machine readable, and best 
+suited for applications where data is exposed to human interaction. OGDL files can be slightly larger or shorter than 
+equivalent XML files, depending on the use of elements versus attributes in XML.</p>
+</li>
+
+<li><b>What are the differences between YAML and OGDL ?</b><br/>
+
+<p>
+Both use space to structure text, but they are quite different in syntax and underlying structure. 
+YAML is a data serialization language that supports two complex types: maps (hashes) and lists (vectors). 
+OGDL on the other hand, needs a different complex type, one that preserves order and can hold duplicate entries: 
+a named list (<tt>Graph</tt>, in the APIs). YAML is complexer than OGDL, in terms of number of productions. 
+For more information on YAML, see <a href="http://yaml.org">yaml.org</a>.</p>
+
+<p>OGDL was born, in fact, while trying to simplify the YAML syntax during the implementation of a Java parser for it.
+Similarities between both languages should be credited to the authors of YAML (Clark Evans, Brian Ingerson and Oren Ben-Kiki).</p>
+</li>
+
+<li>
+<b>Can I convert XML to OGDL ?</b><br/>
+
+<p>Yes, you can. But OGDL cannot represent <i>mixed content</i> cleanly, so the conversion
+has to represent it as is (in original XML) or in some other specific way.</p>
+</li>
+
+<li>
+<b>Can I convert OGDL to XML ?</b><br/>
+
+<p>It depends on the node content. In OGDL any string can be a node, while in XML not every string can be an element.
+If any non terminal node in the OGDL stream conforms to the XML element syntax, then a clean conversion can be made.
+</p>
+</li>
+
+<li>
+<b>Does OGDL support types ?</b><br/>
+
+<p>Not directly. Types <i>can</i> be implemented as a layer on top of the basic syntax, as is proposed in the OGDL Schema specification.</p>
+</li>
+
+<li>
+<b>Can OGDL be stored in RAM as a chain of hashes ?</b><br/>
+
+<p>No. You loose order and duplicates. The language APIs define the <tt>Graph</tt> object for that purpose.</p>
+</li>
+
+</ul>
+
+</div>
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<div class="container">
+<br>
+<hr>
+<br>
+</div>
+</body></html>

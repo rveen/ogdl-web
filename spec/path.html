@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/font-awesome.min.css" rel="stylesheet">
+    
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,italic,bold" rel="stylesheet">
+    <link REL="STYLESHEET" HREF="/style.css" TYPE="text/css">
+    <title>OGDL, Ordered graph data language</title>
+</head>
+
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">OGDL</a>
+        </div>
+        
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+           
+            <li ><a href="/qa.html">FAQ</a></li>
+            
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Specifications <span class="caret"></span></a>
+               
+              <ul class="dropdown-menu">
+                <li><a href="/spec">OGDL</a></li>
+                <li><a href="/spec/path.html">OGDL Path</a></li>
+                <li><a href="/spec/binary.html">OGDL Binary</a></li>
+                <li><a href="/spec/schema.html">OGDL Schema</a></li>
+              </ul> 
+            </li>
+          </ul>
+        </div>
+        
+      </div>
+    </nav>
+
+    <br><br>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
+      <div class="row">
+      <div class="col-md-12">
+      <h1>OGDL Path Specification</h1>
+        <p><b>Revision 2014.1</b>, Jan 2014<br></p>
+      </div>
+      </div>
+      </div>
+    </div>
+
+<div class="container">
+
+<h1>Introduction</h1>
+
+<p>This specification defines a path expression language that enables navigation through an OGDL graph.
+The basic structure of a path is a list of elements separated by dots, where an element can be either a string,
+an index or a selector. For example:
+</p>
+
+<pre>
+config.network.ip
+</pre>
+<pre>
+text.paragraph{2}
+</pre>
+<pre>
+limits.range[1]
+</pre>
+
+<p>
+Indexes ( [n] ) select the nth-1 subnode, while selectors ( {n} ) select the nth-1 
+subnode with the same name as the token written before the selector. An empty 
+selector ( {} ) selects all subnodes with the specified node name. Path 
+character encoding is expected to be Unicode.
+</p>
+
+<p>To clarify, given the following OGDL text:</p>
+
+<pre>
+a
+  b
+    x
+  b
+    y
+  1
+    z
+</pre>
+
+<p>the effect of applying different paths to it is as follows:</p>
+
+<ul>
+<li>a.b selects the first subnode 'b' below 'a'.
+<li>a.1 selects the subnode '1' of 'a'. Note that here '1' is a string, not an index.
+<li>a.b{1} selects the second occurrence of 'b' below 'a'.
+<li>a.b{} selects all occurrences of 'b' below 'a'.
+<li>a[1] selects the second subnode of 'a'.
+</ul>
+
+<!-- This content is for future review
+
+<h1>N. Definition</h1>
+
+<p>
+A path is a concatenation of OGDL elements written in expression format and separated by dots. A path has an
+equivalent representation in OGDL. In fact, each element can be interpreted as a complete OGDL graph.
+</p>
+<p class="note"><b>Note</b>: 
+Strickly speaking, this definition of a path isn't a path anymore, in the sense as it is defined
+in graph theory. This spec asummes the incongruency. In graph theory, a path is a tree with 2 nodes of vertex degree 1
+and n-2 nodes with vertex degree 2 (Eric W. Weisstein, MathWorld, a Wolfram web resource: http://mathworld.wolfram.com)</p>
+
+-->
+
+<h1>Grammar</h1>
+
+<p>
+The following grammar rules or productions are written in a simplified EBNF format similar to the one used in the XML specification
+(see <a href="http://www.w3.org/TR/2004/REC-xml-20040204/#sec-notation">http://www.w3.org/TR/2004/REC-xml-20040204/#sec-notation</a>),
+except that single quotes inclose single characters.
+</p>
+
+<pre>
+[1] path ::= element ( '.' element )*
+[2] basic_element ::= token | quoted | index | selector 
+[3] element = basic_element (index|selector)?
+ 
+[4] index ::= '[' number ']'
+[5] selector ::= '{' number? '}'
+
+[6] token := (unicode_letter | unicode_digit | '_')+
+[7] quoted := '\''  string '\'' | '"' string '"'
+[8] string := (unicode_letter | unicode_mark | unicode_number | 
+               unicode_punctuation | unicode_symbol | unicode_separator_space )+
+[9] number := (unicode_digit)+
+</pre>
+
+<p>Production 3 indicates that the dot that normally separates elements is
+optional before and index or selector.
+</p>
+<p>Productions 7 and 8 state that any graphic character or inline space character
+can appear in a quoted string, but not line breaks.
+</p>
+
+<h1>Examples</h1>
+
+<p>Given the following OGDL text:</p> 
+
+<pre>
+chapter
+  title "Chapter 1"
+  p "Some text"
+  x "----------"
+  p "More text"
+  
+blank_page  
+  
+chapter
+  title "Chapter 2"
+</pre>
+
+<p>the table bellow shows the outcome of applying some paths to it.</p>
+
+<pre>
+Path                Outcome
+----                ------------	
+
+chapter.title       "Chapter 1"
+
+chapter{0}.title    "Chapter 1"
+
+chapter{1}.title    "Chapter 2"
+
+chapter.p{}         "Some text"
+                    "More text"
+                    
+chapter{}.title{}   "Chapter 1"
+                    "Chapter 2"                    
+
+</pre>
+
+
+<br><br>
+
+<h1>A. Changes to this document</h1>
+
+<p>See the <a href="README.md">Change list</a></p>
+
+<hr>
+</div>
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<div class="container">
+<br>
+<br>
+</div>
+</body></html>

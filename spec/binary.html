@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/font-awesome.min.css" rel="stylesheet">
+    
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,italic,bold" rel="stylesheet">
+    <link REL="STYLESHEET" HREF="/style.css" TYPE="text/css">
+    <title>OGDL, Ordered graph data language</title>
+</head>
+
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">OGDL</a>
+        </div>
+        
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+           
+            <li ><a href="/qa.html">FAQ</a></li>
+            
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Specifications <span class="caret"></span></a>
+               
+              <ul class="dropdown-menu">
+                <li><a href="/spec">OGDL</a></li>
+                <li><a href="/spec/path.html">OGDL Path</a></li>
+                <li><a href="/spec/binary.html">OGDL Binary</a></li>
+                <li><a href="/spec/schema.html">OGDL Schema</a></li>
+              </ul> 
+            </li>
+          </ul>
+        </div>
+        
+      </div>
+    </nav>
+
+    <br><br>
+
+<div class="jumbotron">
+   <div class="container">
+      <h1>OGDL Binary Specification</h1>
+        <p><b>Version 1.0</b>, December 2005<br>
+      </div>
+</div>
+
+<div class="container">
+
+<h1>Objective</h1>
+
+<p>This specification defines a binary equivalent of the original OGDL data specification. In this format,
+nodes are either text or binary streams. Text is defined as a sequence of bytes where characters are
+encoded in UTF-8. Binaries are arbitrary byte arrays. This specification does not define any other
+type information other than the text/binary pair. Schemas and types, if wanted, should be defined at
+a higher level.
+</p>
+
+<h1>Grammar</h1>
+
+<pre>
+ogdl-binary ::= header ( level node )* 0x00
+</pre>
+
+<p><tt>level</tt> refers to the indentation level or depth, and starts with 1 for the root level.</p>
+
+<pre>
+header ::= 0x01 0x47 0x00
+level  ::= variable-length-integer
+node   ::= text-node | binary-node
+</pre>
+
+<p>The header itself is a node at the root level with the text 'G'.
+If the specification changes, the header could contain a version number.</p>
+
+<pre>
+text-node ::= text 0x00
+binary-node ::= 0x01 ( length data )* 0x00
+</pre>
+
+<p>Text should be encoded in UTF-8 and cannot begin with 0x01.</p>
+
+<pre>
+length ::= variable-length-integer
+data :: byte[length]
+</pre>
+
+<pre>
+variable-length-integer ::=  
+   0x0000 - 0x00007F: 0xxxxxxx
+   0x0000 - 0x003FFF: 10xxxxxx xxxxxxxx
+   0x0000 - 0x1FFFFF: 110xxxxx xxxxxxxx xxxxxxxx
+   ...
+</pre>
+
+<p>The integer codification is similar to the UTF-8 codification, and has the
+objective of optimizing its size, while allowing for arbitrary large integers
+to be represented.
+</p>
+
+<h1>A basic parser algorithm</h1>
+
+<pre class=code>
+1. Read the header.
+2. Read one multibyte int. If 0x00, then end.
+3. Read one byte. 
+   If 0x01 then read a binary node;
+   else read UTF-8 text until 0x00.
+4. Goto 2.
+
+Binary node:
+
+3.1. Read one multibyte int (=N). If 0x00, end.
+3.2. Read N data bytes.
+3.3. Goto 3.1.
+</pre>
+
+
+<br/>
+<h1>Changes to this document</h1>
+
+<p>See the <a href="README.md">Change list</a></p>
+
+<hr>
+</div>
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<div class="container">
+<br>
+<br>
+</div>
+</body></html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/font-awesome.min.css" rel="stylesheet">
+    
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,italic,bold" rel="stylesheet">
+    <link REL="STYLESHEET" HREF="/style.css" TYPE="text/css">
+    <title>OGDL, Ordered graph data language</title>
+</head>
+
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">OGDL</a>
+        </div>
+        
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+           
+            <li ><a href="/qa.html">FAQ</a></li>
+            
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Specifications <span class="caret"></span></a>
+               
+              <ul class="dropdown-menu">
+                <li><a href="/spec">OGDL</a></li>
+                <li><a href="/spec/path.html">OGDL Path</a></li>
+                <li><a href="/spec/binary.html">OGDL Binary</a></li>
+                <li><a href="/spec/schema.html">OGDL Schema</a></li>
+              </ul> 
+            </li>
+          </ul>
+        </div>
+        
+      </div>
+    </nav>
+
+    <br><br>
+
+<div class="jumbotron">
+      <div class="container">
+      <div class="row">
+      <div class="col-md-12">
+      <h1>OGDL: Ordered Graph Data Language</h1>
+        <p>A simple and readable data format, for humans and machines alike.</p>
+        
+      </div>
+      </div>
+      </div>
+</div>
+
+<div class="container">
+
+<h2>What is OGDL?</h2>
+
+<p>OGDL is a structured textual format that represents information in the form of graphs, where the nodes are strings and
+the arcs or edges are spaces or indentation.
+</p>
+
+<p>An example of OGDL:</p>
+
+<pre class="example">
+network
+  eth0
+    ip   192.168.0.10
+    mask 255.255.255.0
+    gw   192.168.0.1
+
+hostname crispin
+</pre>
+
+<h2>Specifications</h2>
+
+<ul>
+<li><a href="spec/"><b>OGDL</b></a> (<a href="/rfc/ogdl-rfc.md">Tentative RFC</a>)</li>
+<li><a href="spec/path.html">OGDL Path</a></li>
+<li><a href="spec/binary.html">OGDL Binary</a></li>
+<li><a href="spec/schema.html">OGDL Schema</a></li>
+</ul>
+
+<h2>Implementations</h2>
+
+<ul>
+<li><a href="http://github.com/rveen/ogdl">OGDL for Go</a> (<a href="https://pkg.go.dev/github.com/rveen/ogdl">Documentation</a>)
+</ul>
+
+<!--
+<b>Old and not up to date</b>
+<br>
+<br>
+<ul>
+<li><a href="http://github.com/rveen/ogdl-c">OGDL for C</a>
+<li><a href="http://github.com/rveen/ogdl-java">OGDL for Java</a>
+<li><a href="http://search.cpan.org/~hzhou/ogdl-perl-0.2/">OGDL for Perl</a>
+</ul>
+-->
+
+<h2>License</h2>
+
+<p>
+The specifications are licensed under the <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+</p>
+
+<hr>
+<br><br>
+</div>
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+</body></html>

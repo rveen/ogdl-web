@@ -1,0 +1,165 @@
+body { font-family: 'Roboto', sans-serif; color: #444; margin-top: 0px; font-size: 12pt; background-color: #eeeeee; }
+p { text-align: justify; margin-bottom: 1em }
+pre.code { border: 1px solid #ccc; background-color: white; padding: 0.3rem; border-radius: 5px; }
+
+a { color: #366088; }
+a.no-u { text-decoration: none; }
+a:hover { color: #777; }
+:target { color: red !important }
+
+img { max-width: 100%; height: auto; display: block; }
+img.icon { display:inline; width:18px; height:18px; }
+img.icon-sm { display:inline; width:15px; height:15px; margin-bottom: 3px}
+img.icon-big { display:inline; width:30px; height:30px; }
+
+/* Headers */
+h1, h2,h3,h4,h5,h6 { font-family: 'Open Sans', sans-serif; font-weight: 400; color: #333; margin-bottom: 1rem; }
+
+h5 { font-size: 1rem; }
+h4 { font-size: 1rem; }
+h3 { font-size: 1.1rem; }
+h2 { font-size: 1.2rem; }
+h1 { font-size: 1.5rem;}
+.title { font-size: 2.0rem; font-weight: 400; color: #508bb1; margin-bottom: 1.5rem; }
+
+hr {border-top: 1px solid #ddd; margin:0; padding: 0; }
+
+/* Tables */
+.hrow, .table, .hcol { 
+    border-top: 1px solid #ddd; 
+    border-bottom: 1px solid #ddd; 
+    border-collapse: collapse; 
+    border-spacing: 0px; 
+    display: table;
+    max-width: 100%;
+    margin: 2rem 1rem;
+    vertical-align: top;
+}
+
+thead { font-weight: bold; }
+thead td { border-bottom: solid 1px #666; }
+.hrow tr { display: table-row; vertical-align: inherit; border-color: inherit; }
+.hrow th, td { border-top: 0; border-bottom: 1px solid #ccc; padding: 0.5rem }
+
+.bg-dark {
+    background-color: #363b41 !important;
+}
+
+.navbar { box-shadow: 0 2px 3px #111; }
+
+.btn-primary {
+    color: #fff;
+    background-color: #4074ad;
+    border-color: #4074ad;
+}
+
+.medblue0 {
+	background: #366088;
+}
+
+.medblue1 {
+	background: #668db8;
+}
+
+.medblue2 {
+	background: #93aec5;
+}
+
+.medblue3 {
+	background: #b6ccdb;
+}
+
+.hero {
+	background: #374f69;
+	background: linear-gradient(127deg,rgba(47, 68, 97, 1) 0%, rgba(39, 83, 117, 1) 100%);
+}
+
+.hero2 {
+	color: white;
+	background: #668db8;
+	padding: 1%;
+    /*  background: rgb(56,138,181); */
+  background: linear-gradient(150deg, rgba(56,138,181,1) 0%, rgba(4,53,88,1) 100%);
+}
+
+.hero button {
+	background: #366088;
+}
+
+.hero h1 {
+	color: white;
+}
+
+.hero p {
+	font-size: 1.2em;
+}
+
+.list-dir {
+	color: #369;
+	font-size: 1.2em;
+}
+
+.btn-success {
+	background-color: #668db8;
+	border-color: #668db8;
+}
+
+.btn-success:hover {
+    background-color: #93aec5;
+}
+
+.table {
+	border-bottom: 1px solid #ddd;
+}
+
+.bg-light {
+    background-color: #d7dde0; /* #fff!important; */
+}
+
+.nav-hr {
+	border-top: 1px solid #bdbdbd;
+}
+
+.breadcrumb a { color: white; }
+
+.breadcrumb {
+	background: #444; 
+	padding-top: 10px!important; 
+	padding: 12px; 
+	border-bottom: 1px solid #ddd;
+	margin-bottom: 0px;
+	font-size: 16px;
+	color: #eee;
+	ntext-shadow: 1px 1px 1px white;
+	border-radius: 0;
+}
+
+.slides {
+ box-shadow: 2px 2px 10px #000;
+ margin: 0;
+ width: 100%;		   	/* responsive */
+ padding-bottom: 45%; 	/* what is this for ??? */
+ overflow: hidden;    	/* if images after resizing exceed x or y, don't show that part.
+			  	   Images that are smaller than the .slides div in x oy y are a
+                        problem */
+ position: relative;  	/* needed by position:absolute later */
+}
+
+
+.slides img {
+ position: absolute;  	/* all images at the same overlapping position */
+ opacity: 1;			/* default: totally transparent */
+ width: 100%;			/* responsive */
+ height: auto;		/* fit x, hope resized image fills y */
+}
+
+
+.slides img:first-child {
+}
+
+
+.slides img:last-child {
+}
+
+
+
